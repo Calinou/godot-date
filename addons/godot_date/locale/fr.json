@@ -1,0 +1,74 @@
+{
+	"name": "fr",
+	"formats": {
+		"LT": "HH:mm",
+		"LTS": "HH:mm:ss",
+		"L": "DD/MM/YYYY",
+		"LL": "D MMMM YYYY",
+		"LLL": "D MMMM YYYY HH:mm",
+		"LLLL": "dddd D MMMM YYYY HH:mm"
+	},
+	"relative": {
+		"future": "dans {date}",
+		"past": "il y a {date}"
+	},
+	"months": {
+		"long": [
+			"janvier",
+			"février",
+			"mars",
+			"avril",
+			"mai",
+			"juin",
+			"juillet",
+			"août",
+			"septembre",
+			"octobre",
+			"novembre",
+			"décembre"
+		],
+		"short": [
+			"janv.",
+			"févr.",
+			"mars",
+			"avril",
+			"mai",
+			"juin",
+			"juil.",
+			"août",
+			"sept.",
+			"oct.",
+			"nov.",
+			"déc."
+		]
+	},
+	"weekdays": {
+		"long": [
+			"lundi",
+			"mardi",
+			"mercredi",
+			"jeudi",
+			"vendredi",
+			"samedi",
+			"dimanche"
+		],
+		"short": [
+			"lun.",
+			"mar.",
+			"mer.",
+			"jeu.",
+			"ven.",
+			"sam.",
+			"dim."
+		],
+		"min": [
+			"lu",
+			"ma",
+			"me",
+			"je",
+			"ve",
+			"sa",
+			"di"
+		]
+	}
+}
