@@ -46,10 +46,20 @@ func _init(date) -> void:
 # If `locale` is null, the language from the TranslationServer will be used.
 func set_locale(p_locale: String) -> void:
 	var file := File.new()
-	file.open(
+	var error := file.open(
 			"res://addons/godot_date/locale/" + p_locale + ".json",
 			File.READ
 	)
+
+	if error != OK:
+		# Fall back to English if the locale file can't be opened or doesn't exist
+		# FIXME: Use `en_US` once it's available instead of `en_GB`
+		var fallback_error := file.open("res://addons/godot_date/locale/en_GB.json", File.READ)
+
+		if fallback_error != OK:
+			push_error("Could not open fallback locale file at res://addons/godot_date/locale/en_GB.json.")
+			assert(false)
+
 	var json_result := JSON.parse(file.get_as_text())
 
 	if json_result.error == OK:
