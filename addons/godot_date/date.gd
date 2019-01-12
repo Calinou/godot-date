@@ -82,7 +82,7 @@ func set_locale(p_locale: String) -> void:
 # will be returned.
 func format(type = null) -> String:
 	if type != null:
-		var date_string: String = locale_strings.formats[type]
+		var date_string: String = locale_strings.formats.get(type, type)
 		# Replacements for placeholders in format strings
 		var replacements := {
 			"YYYY": str(year),
