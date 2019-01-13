@@ -5,6 +5,15 @@
 
 extends MainLoop
 
+enum Precision {
+	YEAR = 0,
+	MONTH = 1,
+	DAY = 2,
+	HOUR = 3,
+	MINUTE = 4,
+	SECOND = 5,
+}
+
 var year: int
 var month: int
 var day: int
@@ -82,6 +91,7 @@ func set_locale(p_locale: String) -> void:
 # will be returned.
 func format(type = null) -> String:
 	if type != null:
+		# Look for a LDML format, if there is none, format the string directly
 		var date_string: String = locale_strings.formats.get(type, type)
 		# Replacements for placeholders in format strings
 		var replacements := {
@@ -114,22 +124,44 @@ func format(type = null) -> String:
 		})
 
 # Returns `true` if the date is prior to the date passed as argument.
-func is_before(date: Object) -> bool:
+# A second precision argument can optionally be passed.
+func is_before(date: Object, precision: int = Precision.SECOND) -> bool:
 	if (
 		year < date.year or
-		year == date.year and month < date.month or
-		year == date.year and month == date.month and day < date.day or
-		year == date.year and month == date.month and day == date.day and hour < date.hour or
-		year == date.year and month == date.month and day == date.day and hour == date.hour and minute < date.minute or
-		year == date.year and month == date.month and day == date.day and hour == date.hour and minute == date.minute and second < date.second
+		precision >= Precision.MONTH and year == date.year and month < date.month or
+		precision >= Precision.DAY and year == date.year and month == date.month and day < date.day or
+		precision >= Precision.HOUR and year == date.year and month == date.month and day == date.day and hour < date.hour or
+		precision >= Precision.MINUTE and year == date.year and month == date.month and day == date.day and hour == date.hour and minute < date.minute or
+		precision >= Precision.SECOND and year == date.year and month == date.month and day == date.day and hour == date.hour and minute == date.minute and second < date.second
+	):
+		return true
+
+	return false
+
+# Returns `true` if the date is equal or prior to the date passed as argument.
+# A second precision argument can optionally be passed.
+func is_same_or_before(date: Object, precision: int = Precision.SECOND) -> bool:
+	if (
+		year <= date.year or
+		precision >= Precision.MONTH and year == date.year and month <= date.month or
+		precision >= Precision.DAY and year == date.year and month == date.month and day <= date.day or
+		precision >= Precision.HOUR and year == date.year and month == date.month and day == date.day and hour <= date.hour or
+		precision >= Precision.MINUTE and year == date.year and month == date.month and day == date.day and hour == date.hour and minute <= date.minute or
+		precision >= Precision.SECOND and year == date.year and month == date.month and day == date.day and hour == date.hour and minute == date.minute and second <= date.second
 	):
 		return true
 
 	return false
 
 # Returns `true` if the date is posterior to the date passed as argument.
-func is_after(date: Object) -> bool:
-	return !is_before(date)
+# A second precision argument can optionally be passed.
+func is_after(date: Object, precision: int = Precision.SECOND) -> bool:
+	return !is_before(date, precision)
+
+# Returns `true` if the date is equal or posterior to the date passed as argument.
+# A second precision argument can optionally be passed.
+func is_same_or_after(date: Object, precision: int = Precision.SECOND) -> bool:
+	return !is_same_or_before(date, precision)
 
 # TODO: Handle dates with timezones
 func _parse_iso_date(date: String) -> Dictionary:
