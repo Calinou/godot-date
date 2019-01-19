@@ -5,13 +5,14 @@
 
 extends MainLoop
 
+# Used to specify precision in comparisons (from least to most accurate)
 enum Precision {
-	YEAR = 0,
-	MONTH = 1,
-	DAY = 2,
-	HOUR = 3,
-	MINUTE = 4,
-	SECOND = 5,
+	YEAR,
+	MONTH,
+	DAY,
+	HOUR,
+	MINUTE,
+	SECOND,
 }
 
 var year: int
