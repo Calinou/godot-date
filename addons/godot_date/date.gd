@@ -29,8 +29,10 @@ var locale: String setget set_locale
 # The locale strings as defined in the locale JSON
 var locale_strings: Dictionary
 
-# Creates a new Date instance.
-# Accepted date formats: ISO 8601 string, Godot date dictionary
+# Creates a new Date instance. Accepted date formats:
+# - Godot date dictionary
+# - ISO 8601 string
+# - UNIX timestamp integer (positive or negative)
 func _init(date) -> void:
 	if typeof(date) == TYPE_DICTIONARY:
 		year = date.year
@@ -41,6 +43,14 @@ func _init(date) -> void:
 		second = date.second
 	elif typeof(date) == TYPE_STRING and date.find("T") >= 0 and date.find("Z") >= 0:
 		var result := _parse_iso_date(date)
+		year = result.year
+		month = result.month
+		day = result.day
+		hour = result.hour
+		minute = result.minute
+		second = result.second
+	elif typeof(date) == TYPE_INT:
+		var result := OS.get_datetime_from_unix_time(date)
 		year = result.year
 		month = result.month
 		day = result.day
