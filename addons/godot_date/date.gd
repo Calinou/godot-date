@@ -178,6 +178,31 @@ func is_same_or_after(date: Object, precision: int = Precision.SECOND) -> bool:
 func is_leap_year() -> bool:
 	return year % 4 == 0
 
+# Returns the number of days in the current month.
+func get_days_in_month() -> int:
+	match month:
+		OS.MONTH_JANUARY, \
+		OS.MONTH_MARCH, \
+		OS.MONTH_MAY, \
+		OS.MONTH_JULY, \
+		OS.MONTH_AUGUST, \
+		OS.MONTH_OCTOBER, \
+		OS.MONTH_DECEMBER:
+			return 31
+
+		OS.MONTH_APRIL, \
+		OS.MONTH_JUNE, \
+		OS.MONTH_SEPTEMBER, \
+		OS.MONTH_NOVEMBER:
+			return 30
+
+		OS.MONTH_FEBRUARY:
+			return 29 if is_leap_year() else 28
+
+		_:
+			push_error("Date has an invalid month, cannot return the number of days.")
+			return 0
+
 # TODO: Handle dates with timezones
 func _parse_iso_date(date: String) -> Dictionary:
 	var fragments := date.split("T")
