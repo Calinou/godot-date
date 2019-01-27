@@ -174,6 +174,10 @@ func is_after(date: Object, precision: int = Precision.SECOND) -> bool:
 func is_same_or_after(date: Object, precision: int = Precision.SECOND) -> bool:
 	return !is_same_or_before(date, precision)
 
+# Returns `true` if the year is a leap year.
+func is_leap_year() -> bool:
+	return year % 4 == 0
+
 # TODO: Handle dates with timezones
 func _parse_iso_date(date: String) -> Dictionary:
 	var fragments := date.split("T")
