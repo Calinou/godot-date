@@ -33,7 +33,12 @@ var locale_strings: Dictionary
 # - Godot date dictionary
 # - ISO 8601 string
 # - UNIX timestamp integer (positive or negative)
-func _init(date) -> void:
+#
+# If no parameter is passed, the current date will be used.
+func _init(date = null) -> void:
+	if date == null:
+		date = OS.get_datetime()
+
 	if typeof(date) == TYPE_DICTIONARY:
 		year = date.year
 		month = date.month
