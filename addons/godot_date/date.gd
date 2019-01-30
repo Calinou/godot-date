@@ -177,12 +177,12 @@ func is_same_or_before(date: Object, precision: int = Precision.SECOND) -> bool:
 # Returns `true` if the date is posterior to the date passed as argument.
 # A second precision argument can optionally be passed.
 func is_after(date: Object, precision: int = Precision.SECOND) -> bool:
-	return !is_before(date, precision)
+	return !is_same_or_before(date, precision)
 
 # Returns `true` if the date is equal or posterior to the date passed as argument.
 # A second precision argument can optionally be passed.
 func is_same_or_after(date: Object, precision: int = Precision.SECOND) -> bool:
-	return !is_same_or_before(date, precision)
+	return !is_before(date, precision)
 
 # Returns `true` if the year is a leap year.
 func is_leap_year() -> bool:
