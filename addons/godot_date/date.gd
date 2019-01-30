@@ -139,6 +139,21 @@ func format(type = null) -> String:
 			second = str(second).pad_zeros(2),
 		})
 
+# Returns `true` if the date is equal to the date passed as argument.
+# A second precision argument can optionally be passed.
+func is_same(date: Object, precision: int = Precision.SECOND) -> bool:
+	if (
+		precision <= Precision.YEAR and year == date.year or
+		precision <= Precision.MONTH and year == date.year and month == date.month or
+		precision <= Precision.DAY and year == date.year and month == date.month and day == date.day or
+		precision <= Precision.HOUR and year == date.year and month == date.month and day == date.day and hour == date.hour or
+		precision <= Precision.MINUTE and year == date.year and month == date.month and day == date.day and hour == date.hour and minute == date.minute or
+		year == date.year and month == date.month and day == date.day and hour == date.hour and minute == date.minute and second == date.second
+	):
+		return true
+
+	return false
+
 # Returns `true` if the date is prior to the date passed as argument.
 # A second precision argument can optionally be passed.
 func is_before(date: Object, precision: int = Precision.SECOND) -> bool:
@@ -157,17 +172,7 @@ func is_before(date: Object, precision: int = Precision.SECOND) -> bool:
 # Returns `true` if the date is equal or prior to the date passed as argument.
 # A second precision argument can optionally be passed.
 func is_same_or_before(date: Object, precision: int = Precision.SECOND) -> bool:
-	if (
-		year <= date.year or
-		precision >= Precision.MONTH and year == date.year and month <= date.month or
-		precision >= Precision.DAY and year == date.year and month == date.month and day <= date.day or
-		precision >= Precision.HOUR and year == date.year and month == date.month and day == date.day and hour <= date.hour or
-		precision >= Precision.MINUTE and year == date.year and month == date.month and day == date.day and hour == date.hour and minute <= date.minute or
-		precision >= Precision.SECOND and year == date.year and month == date.month and day == date.day and hour == date.hour and minute == date.minute and second <= date.second
-	):
-		return true
-
-	return false
+	return is_same(date, precision) or is_before(date, precision)
 
 # Returns `true` if the date is posterior to the date passed as argument.
 # A second precision argument can optionally be passed.
