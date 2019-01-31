@@ -15,13 +15,12 @@ enum Precision {
 	SECOND,
 }
 
-var year: int setget set_year
-var month: int setget set_month
-var day: int setget set_day
-var hour: int setget set_hour
-var minute: int setget set_minute
-var second: int setget set_second
-var unix: int setget set_unix
+var year: int
+var month: int
+var day: int
+var hour: int
+var minute: int
+var second: int
 
 # The Date instance's locale
 # By default, the locale defined in TranslationServer is used
@@ -47,7 +46,6 @@ func _init(date = null) -> void:
 		hour = date.hour
 		minute = date.minute
 		second = date.second
-		unix = _get_unix()
 	elif typeof(date) == TYPE_STRING and date.find("T") >= 0 and date.find("Z") >= 0:
 		var result := _parse_iso_date(date)
 		year = result.year
@@ -56,11 +54,22 @@ func _init(date = null) -> void:
 		hour = result.hour
 		minute = result.minute
 		second = result.second
-		unix = _get_unix()
 	elif typeof(date) == TYPE_INT:
-		self.unix = date
+		var result := OS.get_datetime_from_unix_time(date)
+		year = result.year
+		month = result.month
+		day = result.day
+		hour = result.hour
+		minute = result.minute
+		second = result.second
 	else:
-		push_error("Unrecognized date format.")
+		push_error("Unrecognized date format: " + str(date))
+		year = 1970
+		month = 1
+		day = 1
+		hour = 0
+		minute = 0
+		second = 0
 
 	self.locale = TranslationServer.get_locale()
 
@@ -97,47 +106,77 @@ func set_locale(p_locale: String) -> void:
 
 	locale = p_locale
 
-# Sets the date's year.
-func set_year(p_year: int) -> void:
-	year = p_year
-	unix = _get_unix()
+# Returns a new Date instance with the year set to the passed value.
+#warning-ignore:function_conflicts_variable
+func year(p_year: int) -> Object:
+	return get_script().new({
+		year = p_year,
+		month = month,
+		day = day,
+		hour = hour,
+		minute = minute,
+		second = second,
+	})
 
-# Sets the date's month.
-func set_month(p_month: int) -> void:
-	month = p_month
-	unix = _get_unix()
+# Returns a new Date instance with the month set to the passed value.
+#warning-ignore:function_conflicts_variable
+func month(p_month: int) -> Object:
+	return get_script().new({
+		year = year,
+		month = p_month,
+		day = day,
+		hour = hour,
+		minute = minute,
+		second = second,
+	})
 
-# Sets the date's day.
-func set_day(p_day: int) -> void:
-	day = p_day
-	unix = _get_unix()
+# Returns a new Date instance with the day set to the passed value.
+#warning-ignore:function_conflicts_variable
+func day(p_day: int) -> Object:
+	return get_script().new({
+		year = year,
+		month = month,
+		day = p_day,
+		hour = hour,
+		minute = minute,
+		second = second,
+	})
 
-# Sets the date's hour.
-func set_hour(p_hour: int) -> void:
-	hour = p_hour
-	unix = _get_unix()
+# Returns a new Date instance with the hour set to the passed value.
+#warning-ignore:function_conflicts_variable
+func hour(p_hour: int) -> Object:
+	return get_script().new({
+		year = year,
+		month = month,
+		day = day,
+		hour = p_hour,
+		minute = minute,
+		second = second,
+	})
 
-# Sets the date's minute.
-func set_minute(p_minute: int) -> void:
-	minute = p_minute
-	unix = _get_unix()
+# Returns a new Date instance with the minute set to the passed value.
+#warning-ignore:function_conflicts_variable
+func minute(p_minute: int) -> Object:
+	return get_script().new({
+		year = year,
+		month = month,
+		day = day,
+		hour = hour,
+		minute = p_minute,
+		second = second,
+	})
 
-# Sets the date's second.
-func set_second(p_second: int) -> void:
-	second = p_second
-	unix = _get_unix()
-
-# Sets the date as an UNIX timestamp integer in seconds (positive or negative).
-func set_unix(p_unix: int) -> void:
-	var result := OS.get_datetime_from_unix_time(p_unix)
-	year = result.year
-	month = result.month
-	day = result.day
-	hour = result.hour
-	minute = result.minute
-	second = result.second
-
-	unix = p_unix
+# Returns a new Date instance with the second set to the passed value.
+#warning-ignore:function_conflicts_variable
+func second(p_second: int) -> Object:
+	return get_script().new({
+		year = year,
+		month = month,
+		day = day,
+		hour = hour,
+		minute = minute,
+		second = p_second,
+	})
 
 # Formats the date following the given type.
 # `type` should be a LDML-like string or a localized format,
@@ -249,11 +288,15 @@ func get_days_in_month() -> int:
 			return 29 if is_leap_year() else 28
 
 		_:
-			push_error("Date has an invalid month, cannot return the number of days.")
+			push_error(
+					"Date has an invalid month ({month}), cannot return the number of days.".format({
+						month = month,
+					})
+			)
 			return 0
 
-# Returns the instance's UNIX timestamp in seconds (used for updating the instance's UNIX timestamp).
-func _get_unix() -> int:
+# Returns the instance's UNIX timestamp in seconds.
+func unix() -> int:
 	return OS.get_unix_time_from_datetime({
 		year = year,
 		month = month,
