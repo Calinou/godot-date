@@ -107,8 +107,7 @@ func set_locale(p_locale: String) -> void:
 	locale = p_locale
 
 # Returns a new Date instance with the year set to the passed value.
-#warning-ignore:function_conflicts_variable
-func year(p_year: int) -> Object:
+func with_year(p_year: int) -> Object:
 	return get_script().new({
 		year = p_year,
 		month = month,
@@ -119,8 +118,7 @@ func year(p_year: int) -> Object:
 	})
 
 # Returns a new Date instance with the month set to the passed value.
-#warning-ignore:function_conflicts_variable
-func month(p_month: int) -> Object:
+func with_month(p_month: int) -> Object:
 	return get_script().new({
 		year = year,
 		month = p_month,
@@ -131,8 +129,7 @@ func month(p_month: int) -> Object:
 	})
 
 # Returns a new Date instance with the day set to the passed value.
-#warning-ignore:function_conflicts_variable
-func day(p_day: int) -> Object:
+func with_day(p_day: int) -> Object:
 	return get_script().new({
 		year = year,
 		month = month,
@@ -143,8 +140,7 @@ func day(p_day: int) -> Object:
 	})
 
 # Returns a new Date instance with the hour set to the passed value.
-#warning-ignore:function_conflicts_variable
-func hour(p_hour: int) -> Object:
+func with_hour(p_hour: int) -> Object:
 	return get_script().new({
 		year = year,
 		month = month,
@@ -155,8 +151,7 @@ func hour(p_hour: int) -> Object:
 	})
 
 # Returns a new Date instance with the minute set to the passed value.
-#warning-ignore:function_conflicts_variable
-func minute(p_minute: int) -> Object:
+func with_minute(p_minute: int) -> Object:
 	return get_script().new({
 		year = year,
 		month = month,
@@ -167,8 +162,7 @@ func minute(p_minute: int) -> Object:
 	})
 
 # Returns a new Date instance with the second set to the passed value.
-#warning-ignore:function_conflicts_variable
-func second(p_second: int) -> Object:
+func with_second(p_second: int) -> Object:
 	return get_script().new({
 		year = year,
 		month = month,
