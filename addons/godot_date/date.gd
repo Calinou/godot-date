@@ -39,14 +39,14 @@ func _init(date = null) -> void:
 	if date == null:
 		date = OS.get_datetime()
 
-	if typeof(date) == TYPE_DICTIONARY:
+	if date is Dictionary:
 		year = date.year
 		month = date.month
 		day = date.day
 		hour = date.hour
 		minute = date.minute
 		second = date.second
-	elif typeof(date) == TYPE_STRING and date.find("T") >= 0 and date.find("Z") >= 0:
+	elif date is String and date.find("T") >= 0 and date.find("Z") >= 0:
 		var result := _parse_iso_date(date)
 		year = result.year
 		month = result.month
@@ -54,7 +54,7 @@ func _init(date = null) -> void:
 		hour = result.hour
 		minute = result.minute
 		second = result.second
-	elif typeof(date) == TYPE_INT:
+	elif date is int:
 		var result := OS.get_datetime_from_unix_time(date)
 		year = result.year
 		month = result.month
